@@ -1,0 +1,184 @@
+
+### Register
+POST http://127.0.0.1:8000/api/auth/register/ HTTP/1.1
+content-type: application/json
+
+{
+    "username":"test2",
+    "email":"test2@gmail.com",
+    "password":"test123"
+}
+
+### RESPONSE -> Register
+HTTP/1.1 201 Created
+{
+  "id": 4,
+  "username": "test2",
+  "email": "test2@gmail.com"
+}
+
+____________________________________________________________________________________________
+
+### user 1
+POST http://127.0.0.1:8000/api/auth/login/ HTTP/1.1
+content-type: application/json
+
+{
+    "username":"test",
+     "password":"testdfgfg123"
+}
+
+### superuser
+POST http://127.0.0.1:8000/api/auth/login/ HTTP/1.1
+content-type: application/json
+
+{
+    "username":"saga",
+     "password":"123"
+}
+
+### RESPONSE -> Login
+HTTP/1.1 200 OK
+
+{
+  "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1MTc0MDg5MCwiaWF0IjoxNzUxNjU0NDkwLCJqdGkiOiI3ZmY5OTdlMjlkNWQ0YTVkODAxODMxOWM1NmMzMTZkNSIsInVzZXJfaWQiOjEsInVzZXJuYW1lIjoidGVzdCIsImlzX3N1cGVydXNlciI6ZmFsc2V9.Vp3c2wHvHvPQLV05q-xbY5Z01_QsCpSmWagT_PTrxVk",
+  "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUxNjU0NzkwLCJpYXQiOjE3NTE2NTQ0OTAsImp0aSI6IjQxZDRiZWEwMTEzNzQ1M2NhMmJjZmM2ZWMyMTIxNDJlIiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJ0ZXN0IiwiaXNfc3VwZXJ1c2VyIjpmYWxzZX0.Paod1TOR76bMWePj1KHUwAs-eS8_rPsbmjdJVnmhrkk"
+}
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+### Create Expense/Income
+POST http://127.0.0.1:8000/api/expense/ HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUxNjU0NzkwLCJpYXQiOjE3NTE2NTQ0OTAsImp0aSI6IjQxZDRiZWEwMTEzNzQ1M2NhMmJjZmM2ZWMyMTIxNDJlIiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJ0ZXN0IiwiaXNfc3VwZXJ1c2VyIjpmYWxzZX0.Paod1TOR76bMWePj1KHUwAs-eS8_rPsbmjdJVnmhrkk
+
+{
+    "title": "baking powder", 
+    "amount": 230, 
+    "transaction_type": "debit",
+    "tax": 13,
+    "tax_type": "percentage"
+}
+
+### Response -> POST
+HTTP/1.1 201 Created
+
+{
+  "id": 6,
+  "total": "259.90",
+  "title": "baking powder",
+  "description": null,
+  "amount": "230.00",
+  "transaction_type": "debit",
+  "tax_type": "percentage",
+  "tax": "13.00",
+  "created_at": "2025-07-04T18:42:56.337530Z",
+  "updated_at": "2025-07-04T18:42:56.337530Z",
+  "user": 1
+}
+---------------------------------------------------------------------------------------------
+
+### Fetch all data
+GET http://127.0.0.1:8000/api/expense/ HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUxNjU0NzkwLCJpYXQiOjE3NTE2NTQ0OTAsImp0aSI6IjQxZDRiZWEwMTEzNzQ1M2NhMmJjZmM2ZWMyMTIxNDJlIiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJ0ZXN0IiwiaXNfc3VwZXJ1c2VyIjpmYWxzZX0.Paod1TOR76bMWePj1KHUwAs-eS8_rPsbmjdJVnmhrkk
+
+###Response -> Fetching all data
+HTTP/1.1 200 OK
+
+{
+  "count": 3,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "id": 1,
+      "title": "Grocery",
+      "amount": "100.00",
+      "transaction_type": "debit",
+      "total": "110.00",
+      "created_at": "2025-07-04T16:51:33.050829Z"
+    },
+    {
+      "id": 2,
+      "title": "milk",
+      "amount": "1200.00",
+      "transaction_type": "credit",
+      "total": "1356.00",
+      "created_at": "2025-07-04T16:52:26.104975Z"
+    },
+    {
+      "id": 6,
+      "title": "baking powder",
+      "amount": "230.00",
+      "transaction_type": "debit",
+      "total": "259.90",
+      "created_at": "2025-07-04T18:42:56.337530Z"
+    }
+  ]
+}
+
+-------------------------------------------------------------------------------------------
+
+### Fetch specific data
+GET http://127.0.0.1:8000/api/expense/6/ HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUxNjU1MTQwLCJpYXQiOjE3NTE2NTQ4NDAsImp0aSI6IjhlZDJjYjI4MDc5ZDRjNjdhZmMxNGJjMDBkNzdmOGFjIiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJ0ZXN0IiwiaXNfc3VwZXJ1c2VyIjpmYWxzZX0.yRl5QSNColB0OCKy_xhrU3KLJuKmyqNz8r-SJiJ2lQI
+
+###Response -> Getting specific data
+HTTP/1.1 200 OK
+
+{
+  "id": 6,
+  "total": "259.90",
+  "title": "baking powder",
+  "description": null,
+  "amount": "230.00",
+  "transaction_type": "debit",
+  "tax_type": "percentage",
+  "tax": "13.00",
+  "created_at": "2025-07-04T18:42:56.337530Z",
+  "updated_at": "2025-07-04T18:42:56.337530Z",
+  "user": 1
+}
+----------------------------------------------------------------------------------------------------------------
+
+### Update the data
+PUT http://127.0.0.1:8000/api/expense/6/ HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUxNjU1MTQwLCJpYXQiOjE3NTE2NTQ4NDAsImp0aSI6IjhlZDJjYjI4MDc5ZDRjNjdhZmMxNGJjMDBkNzdmOGFjIiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJ0ZXN0IiwiaXNfc3VwZXJ1c2VyIjpmYWxzZX0.yRl5QSNColB0OCKy_xhrU3KLJuKmyqNz8r-SJiJ2lQI
+
+{
+    "title": "baking soda", 
+    "amount": 300, 
+    "transaction_type": "debit",
+    "tax": 13,
+    "tax_type": "percentage"
+}
+
+
+###Response -> Updating the data
+HTTP/1.1 200 OK
+
+{
+  "id": 6,
+  "total": "339.00",
+  "title": "baking soda",
+  "description": null,
+  "amount": "300.00",
+  "transaction_type": "debit",
+  "tax_type": "percentage",
+  "tax": "13.00",
+  "created_at": "2025-07-04T18:42:56.337530Z",
+  "updated_at": "2025-07-04T18:49:03.415957Z",
+  "user": 1
+}
+---------------------------------------------------------------------------------------------------------
+### Delete the data
+DELETE  http://127.0.0.1:8000/api/expense/1/ HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUxNjU1MjgzLCJpYXQiOjE3NTE2NTQ5ODMsImp0aSI6ImI3NjVhMDA4ZTMwYzQxZmU5ZDY2MzU0NzQ1M2ZkNjcyIiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJ0ZXN0IiwiaXNfc3VwZXJ1c2VyIjpmYWxzZX0.EA0DmubHSNNxrqGzPi_0tEmyq4zCsPapIlY_gS0fYwk
+
+##Response -> Deleting the data
+HTTP/1.1 204 No Content
+
+--------------------------------------------------------------------------------------
